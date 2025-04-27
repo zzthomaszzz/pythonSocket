@@ -1,6 +1,7 @@
 import pygame
 import client
 from player import Player
+import pickle
 
 # pygame setup
 pygame.init()
@@ -8,9 +9,10 @@ screen = pygame.display.set_mode((1280, 720))
 clock = pygame.time.Clock()
 running = True
 dt = 0
-player = Player(0, 0)
 other_players = []
 client = client.Client()
+player = client.client_socket.recv(1024)
+player = pickle.loads(player)
 
 while running:
     # poll for events
@@ -44,7 +46,7 @@ while running:
     player.update(dt)
     pygame.draw.rect(screen, "red", player.rect)
 
-    client.send(["position", player.get_pos()])
+    other_players = client.send(["position", player.get_pos()])
 
     # flip() the display to put your work on screen
     pygame.display.flip()

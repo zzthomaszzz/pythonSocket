@@ -1,9 +1,10 @@
 import pygame
 
 class Player:
-    def __init__(self, x, y):
+    def __init__(self, x, y, id):
         self.x = x
         self.y = y
+        self.id = id
         self.speed = 200
         self.rect = pygame.rect.Rect(self.x, self.y, 50, 50)
 

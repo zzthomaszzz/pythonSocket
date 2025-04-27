@@ -1,9 +1,17 @@
+import random
 import socket
 import threading
 import pickle
+from player import Player
 
-def handle_client(client, address):
-    print(f"Accepted connection from {address}")
+player_list = []
+
+def handle_client(client, address, _id):
+    print(f"Accepted connection from {address}, Player id: {_id}")
+    for i in player_list:
+        if i.id == _id:
+            client.sendall(pickle.dumps(i))
+            break
     try:
         while True:
             data = client.recv(1024)
@@ -15,6 +23,9 @@ def handle_client(client, address):
         print(f"Error handling client {address}: {e}")
     finally:
         client.close()
+        for i in player_list:
+            if i.id == _id:
+                player_list.remove(i)
         print(f"Connection with {address} closed")
 
 def process_data(data):
@@ -29,10 +40,13 @@ def start_server():
     server_socket.listen(1)
 
     print(f"Server listening on {host}:{port}")
-
     while True:
         client_socket, addr = server_socket.accept()
-        client_thread = threading.Thread(target=handle_client, args=(client_socket, addr))
+
+        new_player = Player(0, 0, random.random())
+        player_list.append(new_player)
+
+        client_thread = threading.Thread(target=handle_client, args=(client_socket, addr, new_player.id))
         client_thread.daemon = True
         client_thread.start()
 
