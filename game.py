@@ -44,9 +44,10 @@ while running:
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("purple")
     player.update(dt)
-    pygame.draw.rect(screen, "red", player.rect)
 
     other_players = client.send(["position", player.get_pos()])
+    for i in other_players:
+        pygame.draw.rect(screen, "red", i.rect)
 
     # flip() the display to put your work on screen
     pygame.display.flip()

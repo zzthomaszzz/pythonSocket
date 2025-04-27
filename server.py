@@ -17,7 +17,7 @@ def handle_client(client, address, _id):
             data = client.recv(1024)
             if not data:
                 break
-            response = process_data(pickle.loads(data))
+            response = process_data(pickle.loads(data), _id)
             client.sendall(pickle.dumps(response))
     except Exception as e:
         print(f"Error handling client {address}: {e}")
@@ -28,8 +28,15 @@ def handle_client(client, address, _id):
                 player_list.remove(i)
         print(f"Connection with {address} closed")
 
-def process_data(data):
-    return data
+def process_data(data, _id):
+    if data[0] == "position":
+        for i in player_list:
+            if i.id == _id:
+                i.set_pos(data[1])
+                break
+        return player_list
+    else:
+        return data
 
 def start_server():
     host = ""

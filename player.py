@@ -17,3 +17,7 @@ class Player:
 
     def get_pos(self):
         return [self.rect.x, self.rect.y]
+
+    def set_pos(self, rect_pos):
+        self.rect.x = rect_pos[0]
+        self.rect.y = rect_pos[1]
