@@ -11,3 +11,8 @@ class Client:
 
     def disconnect(self):
         self.client_socket.close()
+
+    def send(self, data):
+        self.client_socket.send(pickle.dumps(data))
+        response = self.client_socket.recv(1024)
+        return pickle.loads(response)

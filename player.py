@@ -13,3 +13,6 @@ class Player:
     def update(self, dt):
         self.rect.x += (self.right - self.left) * self.speed * dt
         self.rect.y += (self.down - self.up) * self.speed * dt
+
+    def get_pos(self):
+        return [self.rect.x, self.rect.y]

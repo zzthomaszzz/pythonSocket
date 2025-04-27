@@ -9,6 +9,8 @@ clock = pygame.time.Clock()
 running = True
 dt = 0
 player = Player(0, 0)
+other_players = []
+client = client.Client()
 
 while running:
     # poll for events
@@ -25,6 +27,8 @@ while running:
                 player.up = 1
             if event.key == pygame.K_s:
                 player.down = 1
+            if event.key == pygame.K_ESCAPE:
+                running = False
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_a:
                 player.left = 0
@@ -39,6 +43,8 @@ while running:
     screen.fill("purple")
     player.update(dt)
     pygame.draw.rect(screen, "red", player.rect)
+
+    client.send(["position", player.get_pos()])
 
     # flip() the display to put your work on screen
     pygame.display.flip()
